@@ -1,0 +1,6 @@
+.vs/
+gotifySharp/obj/
+gotifySharpIntergrationTests/bin/
+gotifySharpIntergrationTests/obj/
+gotifySharpTests/bin/
+gotifySharpTests/obj/
