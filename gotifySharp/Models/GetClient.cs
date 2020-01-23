@@ -4,7 +4,7 @@ using System.Text;
 
 namespace gotifySharp.Models
 {
-    public class ClientGetModel
+    public class GetClient
     {
 
         public class Rootobject

@@ -4,9 +4,9 @@ using System.Text;
 
 namespace gotifySharp.Models
 {
-    public class MessageGetModel
+    public class GetMessage
     {
         public MessageModel[] messages { get; set; }
-        public PagingModel paging { get; set; }
+        public Paging paging { get; set; }
     }
 }

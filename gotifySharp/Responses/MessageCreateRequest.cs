@@ -7,9 +7,9 @@ namespace gotifySharp.Responses
 {
     public class MessageCreateRequest : Response
     {
-        private MessageSendModel messageModel;
+        private SendMessage messageModel;
 
-        public MessageCreateRequest(bool success, MessageSendModel messageRequest)
+        public MessageCreateRequest(bool success, SendMessage messageRequest)
         {
             this.messageModel = messageRequest;
             this.Success = success;
@@ -21,7 +21,7 @@ namespace gotifySharp.Responses
             this.Success = success;
         }
 
-        public MessageSendModel MessageModel
+        public SendMessage MessageModel
         {
             get
             {

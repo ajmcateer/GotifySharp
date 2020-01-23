@@ -32,7 +32,7 @@ namespace gotifySharpIntergrationTests
             GotifySharp gotifySharp = new GotifySharp(Settings.Config);
 
             var app = await gotifySharp.CreateApplicationAsync("Name", "Description");
-            var res = await gotifySharp.SendMessage("Message", "Test", app.ClientResponse.token, 2);
+            var res = await gotifySharp.SendMessage("Message", "Test", app.Response.token, 2);
             res.Success.Should().BeTrue();
         }
 
@@ -42,7 +42,7 @@ namespace gotifySharpIntergrationTests
             GotifySharp gotifySharp = new GotifySharp(Settings.Config);
 
             var app = await gotifySharp.CreateApplicationAsync("Name", "Description");
-            var res = await gotifySharp.GetMessageForApplicationAsync(app.ClientResponse.id);
+            var res = await gotifySharp.GetMessageForApplicationAsync(app.Response.id);
             res.Success.Should().BeTrue();
         }
     }

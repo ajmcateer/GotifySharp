@@ -21,7 +21,7 @@ namespace gotifySharp.API
             this.services = services;
         }
 
-        public async Task<ApplicationGetResponse> GetApplicationsAsync()
+        public async Task<GetApplicationResponse> GetApplicationsAsync()
         {
             try
             {
@@ -34,14 +34,14 @@ namespace gotifySharp.API
 
                 if (result.IsSuccessStatusCode)
                 {
-                    var parsedJson = JsonConvert.DeserializeObject<List<ApplicationGetModel>>(await result.Content.ReadAsStringAsync());
-                    ApplicationGetResponse applicationModel = new ApplicationGetResponse(true, parsedJson);
+                    var parsedJson = JsonConvert.DeserializeObject<List<Models.ApplicationModel>>(await result.Content.ReadAsStringAsync());
+                    GetApplicationResponse applicationModel = new GetApplicationResponse(true, parsedJson);
                     return applicationModel;
                 }
                 else
                 {
                     var parsedJson = JsonConvert.DeserializeObject<ErrorResponse>(await result.Content.ReadAsStringAsync());
-                    ApplicationGetResponse applicationModel = new ApplicationGetResponse(false, parsedJson);
+                    GetApplicationResponse applicationModel = new GetApplicationResponse(false, parsedJson);
                     return applicationModel;
                 }
             }
@@ -52,15 +52,15 @@ namespace gotifySharp.API
             return null;
         }
 
-        public async Task<ApplicationCreateResponse> CreateApplicationsAsync(string name, string description)
+        public async Task<CreateApplicationResponse> CreateApplicationsAsync(string name, string description)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, path);
 
-            ApplicationCreateModel application = new ApplicationCreateModel();
-            application.description = description;
-            application.name = name;
+            CreateApplication createApplication = new CreateApplication();
+            createApplication.description = description;
+            createApplication.name = name;
 
-            var str = JsonConvert.SerializeObject(application);
+            var str = JsonConvert.SerializeObject(createApplication);
 
             request.Content = new StringContent(str,
                                     Encoding.UTF8,
@@ -73,14 +73,14 @@ namespace gotifySharp.API
 
             if (result.IsSuccessStatusCode)
             {
-                var parsedJson = JsonConvert.DeserializeObject<ApplicationModel>(await result.Content.ReadAsStringAsync());
-                ApplicationCreateResponse applicationModel = new ApplicationCreateResponse(true, parsedJson);
+                var parsedJson = JsonConvert.DeserializeObject<Models.ApplicationModel>(await result.Content.ReadAsStringAsync());
+                CreateApplicationResponse applicationModel = new CreateApplicationResponse(true, parsedJson);
                 return applicationModel;
             }
             else
             {
                 var parsedJson = JsonConvert.DeserializeObject<ErrorResponse>(await result.Content.ReadAsStringAsync());
-                ApplicationCreateResponse applicationModel = new ApplicationCreateResponse(false, parsedJson);
+                CreateApplicationResponse applicationModel = new CreateApplicationResponse(false, parsedJson);
                 return applicationModel;
             }
         }

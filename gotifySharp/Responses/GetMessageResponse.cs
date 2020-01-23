@@ -5,23 +5,23 @@ using System.Text;
 
 namespace gotifySharp.Responses
 {
-    public class MessageGetResponse : Response
+    public class GetMessageResponse : Response
     {
-        private MessageGetModel messageGetModel;
+        private GetMessage messageGetModel;
 
-        public MessageGetResponse(bool success, MessageGetModel clientResponse)
+        public GetMessageResponse(bool success, GetMessage clientResponse)
         {
             this.messageGetModel = clientResponse;
             this.Success = success;
         }
 
-        public MessageGetResponse(bool success, ErrorResponse errorResponse)
+        public GetMessageResponse(bool success, ErrorResponse errorResponse)
         {
             this.ErrorResponse = errorResponse;
             this.Success = success;
         }
 
-        public MessageGetModel MessageGetModel
+        public GetMessage MessageGetModel
         {
             get
             {

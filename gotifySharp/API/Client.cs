@@ -35,7 +35,7 @@ namespace gotifySharp.API
 
             if (result.IsSuccessStatusCode)
             {
-                var parsedJson = JsonConvert.DeserializeObject<ClientModel>(await result.Content.ReadAsStringAsync());
+                var parsedJson = JsonConvert.DeserializeObject<Responses.ClientModel>(await result.Content.ReadAsStringAsync());
                 ClientResponse clientModel = new ClientResponse(true, parsedJson);
                 return clientModel;
             }
@@ -47,7 +47,7 @@ namespace gotifySharp.API
             }
         }
 
-        public async Task<ClientGetResponse> GetClientAsync()
+        public async Task<GetClientResponse> GetClientAsync()
         {
             var httpclient = services.GetService<IHttpClientFactory>();
             var client = httpclient.CreateClient("AdminAuth");
@@ -59,14 +59,14 @@ namespace gotifySharp.API
 
             if (result.IsSuccessStatusCode)
             {
-                var parsedJson = JsonConvert.DeserializeObject<List<ClientGetModel>>(await result.Content.ReadAsStringAsync());
-                ClientGetResponse clientModel = new ClientGetResponse(true, parsedJson);
+                var parsedJson = JsonConvert.DeserializeObject<List<GetClient>>(await result.Content.ReadAsStringAsync());
+                GetClientResponse clientModel = new GetClientResponse(true, parsedJson);
                 return clientModel;
             }
             else
             {
                 var parsedJson = JsonConvert.DeserializeObject<ErrorResponse>(await result.Content.ReadAsStringAsync());
-                ClientGetResponse clientModel = new ClientGetResponse(false, parsedJson);
+                GetClientResponse clientModel = new GetClientResponse(false, parsedJson);
                 return clientModel;
             }
         }
@@ -85,7 +85,7 @@ namespace gotifySharp.API
 
             if (result.IsSuccessStatusCode)
             {
-                var parsedJson = JsonConvert.DeserializeObject<ClientModel>(await result.Content.ReadAsStringAsync());
+                var parsedJson = JsonConvert.DeserializeObject<Responses.ClientModel>(await result.Content.ReadAsStringAsync());
                 ClientResponse clientModel = new ClientResponse(true, parsedJson);
                 return clientModel;
             }

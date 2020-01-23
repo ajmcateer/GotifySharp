@@ -20,12 +20,16 @@ namespace gotifySharp
         private Client clientApi;
         private Message messageApi;
         private Application application;
-        private IExtendedHttpClient extendedHttpClient;
-        private IExtendedHttpClient tokenHttpClient;
+        private Stream stream;
+
+        public event EventHandler<Models.MessageModel> OnMessage;
 
         public GotifySharp(IConfig config)
         {
             ServiceCollection services = new ServiceCollection();
+            services.AddSingleton(config);
+
+            //TODO convert to typed Client
             services.AddHttpClient("AdminAuth", c =>
             {
                 c.BaseAddress = config.GetUri();
@@ -35,6 +39,7 @@ namespace gotifySharp
                     .Add("authorization", "Basic " + config.GetBase64Auth());
             });
 
+            //TODO convert to typed Client
             services.AddHttpClient("TokenAuth", c =>
             {
                 c.BaseAddress = config.GetUri();
@@ -45,8 +50,15 @@ namespace gotifySharp
             var contianer = services.BuildServiceProvider();
 
             clientApi = new Client(contianer);
-            messageApi = new Message(contianer);
+            messageApi = new API.Message(contianer);
             application = new Application(contianer);
+            stream = new Stream(contianer);
+            stream.OnMessage += Stream_OnMessage;
+        }
+
+        private void Stream_OnMessage(object sender, Models.MessageModel e)
+        {
+            OnMessage?.Invoke(this, e);
         }
 
         public async Task<ClientResponse> CreateClientAsync(string name)
@@ -54,7 +66,7 @@ namespace gotifySharp
             return await clientApi.CreateClientAsync(name);
         }
 
-        public async Task<ClientGetResponse> GetClientAsync()
+        public async Task<GetClientResponse> GetClientAsync()
         {
             return await clientApi.GetClientAsync();
         }
@@ -69,7 +81,7 @@ namespace gotifySharp
             return await clientApi.DeleteClientAsync(id);
         }
 
-        public async Task<MessageGetResponse> GetAllMessageAsync(int amount=200, int since=0)
+        public async Task<GetMessageResponse> GetAllMessageAsync(int amount=200, int since=0)
         {
             return await messageApi.GetAllMessages(amount, since);
         }
@@ -79,17 +91,17 @@ namespace gotifySharp
             return await messageApi.CreateMessage(message, title, AppKey, priority);
         }
 
-        public async Task<MessageGetResponse> GetMessageForApplicationAsync(int id, int amount = 200, int since = 0)
+        public async Task<GetMessageResponse> GetMessageForApplicationAsync(int id, int amount = 200, int since = 0)
         {
             return await messageApi.GetMessageForApplication(id.ToString(), amount, since);
         }
 
-        public async Task<ApplicationGetResponse> GetApplications()
+        public async Task<GetApplicationResponse> GetApplications()
         {
             return await application.GetApplicationsAsync();
         }
 
-        public async Task<ApplicationCreateResponse> CreateApplicationAsync(string name, string description)
+        public async Task<CreateApplicationResponse> CreateApplicationAsync(string name, string description)
         {
             return await application.CreateApplicationsAsync(name, description);
         }

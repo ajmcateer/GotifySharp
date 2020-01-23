@@ -5,23 +5,23 @@ using System.Text;
 
 namespace gotifySharp.Models
 {
-    public class ClientGetResponse : Response
+    public class GetClientResponse : Response
     {
-        private List<ClientGetModel> clientGetModel;
+        private List<GetClient> clientGetModel;
 
-        public ClientGetResponse(bool success, List<ClientGetModel> clientResponse)
+        public GetClientResponse(bool success, List<GetClient> clientResponse)
         {
             this.clientGetModel = clientGetModel;
             this.Success = success;
         }
         
-        public ClientGetResponse(bool success, ErrorResponse errorResponse)
+        public GetClientResponse(bool success, ErrorResponse errorResponse)
         {
             this.ErrorResponse = errorResponse;
             this.Success = success;
         }
 
-        public List<ClientGetModel> ClientResponse
+        public List<GetClient> ClientResponse
         {
             get
             {

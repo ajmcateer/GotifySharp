@@ -4,7 +4,7 @@ using System.Text;
 
 namespace gotifySharp.Models
 {
-    public class PagingModel
+    public class Paging
     {
         public int size { get; set; }
         public int since { get; set; }

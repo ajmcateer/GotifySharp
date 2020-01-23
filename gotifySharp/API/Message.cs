@@ -23,7 +23,7 @@ namespace gotifySharp.API
             this.services = services;
         }
 
-        public async Task<MessageGetResponse> GetAllMessages(int amount, int since)
+        public async Task<GetMessageResponse> GetAllMessages(int amount, int since)
         {
             var queryString = new Dictionary<string, string>()
             {
@@ -42,14 +42,14 @@ namespace gotifySharp.API
 
             if (result.IsSuccessStatusCode)
             { 
-                var parsedJson = JsonConvert.DeserializeObject<MessageGetModel>(await result.Content.ReadAsStringAsync());
-                MessageGetResponse messageModel = new MessageGetResponse(true, parsedJson);
+                var parsedJson = JsonConvert.DeserializeObject<GetMessage>(await result.Content.ReadAsStringAsync());
+                GetMessageResponse messageModel = new GetMessageResponse(true, parsedJson);
                 return messageModel;
             }
             else
             {
                 var parsedJson = JsonConvert.DeserializeObject<ErrorResponse>(await result.Content.ReadAsStringAsync());
-                MessageGetResponse clientModel = new MessageGetResponse(false, parsedJson);
+                GetMessageResponse clientModel = new GetMessageResponse(false, parsedJson);
                 return clientModel;
             }
         }
@@ -59,7 +59,7 @@ namespace gotifySharp.API
             var request = new HttpRequestMessage(HttpMethod.Post, path);
             request.Headers.Add("X-Gotify-Key", AppKey);
 
-            MessageSendModel messageToSend = new MessageSendModel();
+            SendMessage messageToSend = new SendMessage();
             messageToSend.title = title;
             messageToSend.message = message;
             messageToSend.priority = prioity;
@@ -77,7 +77,7 @@ namespace gotifySharp.API
 
             if (result.IsSuccessStatusCode)
             {
-                var parsedJson = JsonConvert.DeserializeObject<MessageSendModel>(await result.Content.ReadAsStringAsync());
+                var parsedJson = JsonConvert.DeserializeObject<SendMessage>(await result.Content.ReadAsStringAsync());
                 MessageCreateRequest messageModel = new MessageCreateRequest(true, parsedJson);
                 return messageModel;
             }
@@ -89,7 +89,7 @@ namespace gotifySharp.API
             }
         }
 
-        public async Task<MessageGetResponse> GetMessageForApplication(string id, int amount, int since)
+        public async Task<GetMessageResponse> GetMessageForApplication(string id, int amount, int since)
         {
             var queryString = new Dictionary<string, string>()
             {
@@ -108,14 +108,14 @@ namespace gotifySharp.API
 
             if (result.IsSuccessStatusCode)
             {
-                var parsedJson = JsonConvert.DeserializeObject<MessageGetModel>(await result.Content.ReadAsStringAsync());
-                MessageGetResponse messageModel = new MessageGetResponse(true, parsedJson);
+                var parsedJson = JsonConvert.DeserializeObject<GetMessage>(await result.Content.ReadAsStringAsync());
+                GetMessageResponse messageModel = new GetMessageResponse(true, parsedJson);
                 return messageModel;
             }
             else
             {
                 var parsedJson = JsonConvert.DeserializeObject<ErrorResponse>(await result.Content.ReadAsStringAsync());
-                MessageGetResponse clientModel = new MessageGetResponse(false, parsedJson);
+                GetMessageResponse clientModel = new GetMessageResponse(false, parsedJson);
                 return clientModel;
             }
         }

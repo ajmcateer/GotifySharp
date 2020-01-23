@@ -4,7 +4,7 @@ using System.Text;
 
 namespace gotifySharp.Models
 {
-    public class MessageSendModel
+    public class SendMessage
     {
         public string message { get; set; }
         public string title { get; set; }

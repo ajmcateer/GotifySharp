@@ -5,23 +5,23 @@ using System.Text;
 
 namespace gotifySharp.Responses
 {
-    public class ApplicationCreateRequest : Response
+    public class CreateApplicationResponse : Response
     {
-        private ApplicationCreateModel applicationCreateModel;
+        private ApplicationModel applicationModel;
 
-        public ApplicationCreateRequest(bool success, ApplicationCreateModel applicationCreateModel)
+        public CreateApplicationResponse(bool success, ApplicationModel applicationModel)
         {
-            this.applicationCreateModel = applicationCreateModel;
+            this.applicationModel = applicationModel;
             this.Success = success;
         }
 
-        public ApplicationCreateRequest(bool success, ErrorResponse errorResponse)
+        public CreateApplicationResponse(bool success, ErrorResponse errorResponse)
         {
             this.ErrorResponse = errorResponse;
             this.Success = success;
         }
 
-        public ApplicationCreateModel ApplicationCreateModel
+        public ApplicationModel Response
         {
             get
             {
@@ -31,12 +31,12 @@ namespace gotifySharp.Responses
                 }
                 else
                 {
-                    return applicationCreateModel;
+                    return applicationModel;
                 }
             }
             set
             {
-                applicationCreateModel = value;
+                applicationModel = value;
             }
         }
     }
