@@ -9,7 +9,6 @@ namespace gotifySharp.Models
     public abstract class Response : IJsonResponse
     {
         private ErrorResponse errorResponse;
-
         public bool Success { get; set; }
         public ErrorResponse ErrorResponse
         { 

@@ -21,7 +21,7 @@ namespace gotifySharp.Responses
             this.Success = success;
         }
 
-        public List<ApplicationModel> ClientResponse
+        public List<ApplicationModel> ApplicationResponse
         {
             get
             {

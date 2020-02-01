@@ -1,4 +1,5 @@
-﻿using gotifySharp.Models;
+﻿using gotifySharp.Interfaces;
+using gotifySharp.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
@@ -14,16 +15,17 @@ namespace gotifySharp.API
 
         const string path = "/stream";
         ServiceProvider services;
+        IConfig appConfig;
 
         public Stream(ServiceProvider services)
         {
             this.services = services;
-            ListenForMessage();
+            appConfig = services.GetService<IConfig>();
         }
 
-        private void ListenForMessage()
+        public void InitWebSocket()
         {
-            var ws = new WebSocket("ws://127.0.0.1:30000/stream");
+            var ws = new WebSocket($"ws://{appConfig.url}:{appConfig.port}/stream");
             ws.OnMessage += WsIncomingMessage;
             ws.SetCredentials("admin", "admin", true);
             ws.Connect();

@@ -25,6 +25,7 @@ namespace gotifySharp.API
         {
             try
             {
+                //TODO Use Idispose
                 var request = new HttpRequestMessage(HttpMethod.Get, path);
 
                 var httpclient = services.GetService<IHttpClientFactory>();

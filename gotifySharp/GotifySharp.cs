@@ -27,7 +27,7 @@ namespace gotifySharp
         public GotifySharp(IConfig config)
         {
             ServiceCollection services = new ServiceCollection();
-            services.AddSingleton(config);
+            services.AddSingleton<IConfig>(config);
 
             //TODO convert to typed Client
             services.AddHttpClient("AdminAuth", c =>
@@ -59,6 +59,11 @@ namespace gotifySharp
         private void Stream_OnMessage(object sender, Models.MessageModel e)
         {
             OnMessage?.Invoke(this, e);
+        }
+
+        public void InitWebsocket()
+        {
+            stream.InitWebSocket();
         }
 
         public async Task<ClientResponse> CreateClientAsync(string name)

@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "gotifySharp", "gotifySharp\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "gotifySharpUnitTests", "gotifySharpTests\gotifySharpUnitTests.csproj", "{164CDF7C-3F82-4860-A485-C40AB2FE42BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gotifySharpIntergrationTests", "gotifySharpIntergrationTests\gotifySharpIntergrationTests.csproj", "{F74494C4-3816-4F5F-91D7-5D746A2D7578}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "gotifySharpIntergrationTests", "gotifySharpIntergrationTests\gotifySharpIntergrationTests.csproj", "{F74494C4-3816-4F5F-91D7-5D746A2D7578}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{335B27DD-AE25-4AAF-A8F6-63909727F34F}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

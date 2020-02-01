@@ -28,7 +28,7 @@ namespace gotifySharpTests
                 "\"token\": \"CWH0wZ5r0Mbac.r\"}");
 
             mockExtendedHttpClient.Setup(m => m.SendAsync(It.IsAny<HttpRequestMessage>())).ReturnsAsync(responseMessage);
-            mockAppConfig.Setup(m => m.ExtendedHttpClient).Returns(mockExtendedHttpClient.Object);
+            //mockAppConfig.Setup(m => m.ExtendedHttpClient).Returns(mockExtendedHttpClient.Object);
 
 
             GotifySharp gotify = new GotifySharp(mockAppConfig.Object);
@@ -48,7 +48,7 @@ namespace gotifySharpTests
                 "\"errorDescription\": \"you need to provide a valid access token or user credentials to access this api\"}");
 
             mockExtendedHttpClient.Setup(m => m.SendAsync(It.IsAny<HttpRequestMessage>())).ReturnsAsync(responseMessage);
-            mockAppConfig.Setup(m => m.ExtendedHttpClient).Returns(mockExtendedHttpClient.Object);
+            //mockAppConfig.Setup(m => m.ExtendedHttpClient).Returns(mockExtendedHttpClient.Object);
 
 
             GotifySharp gotify = new GotifySharp(mockAppConfig.Object);

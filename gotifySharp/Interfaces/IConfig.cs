@@ -10,8 +10,8 @@ namespace gotifySharp.Interfaces
         public string password { get; set; }
         public string url { get; set; }
         public int port { get; set; }
-        IExtendedHttpClient ExtendedHttpClient { get; set; }
-        IExtendedHttpClient TokenHttpClient { get; set; }
+        public string protocol { get; set; }
+        public string path { get; set; }
         public Uri GetUri();
         public string GetBase64Auth();
     }

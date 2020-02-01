@@ -7,54 +7,35 @@ namespace gotifySharp.Models
 {
     public class AppConfig : IConfig
     {
-        private IExtendedHttpClient _extendedHttpClient;
-        private IExtendedHttpClient _tokenHttpClient;
-
         public string userName { get; set; }
         public string password { get; set; }
         public string url { get; set; }
         public int port { get; set; }
-        private string protocol { get; set; }
+        public string protocol { get; set; }
+        public string path { get; set; }
         private string base64Auth { get; set; }
-        public IExtendedHttpClient ExtendedHttpClient 
-        {
-            get
-            {
-                return _extendedHttpClient;
-            }
-            set
-            {
-                _extendedHttpClient = value;
-            }
-        }
 
-        public IExtendedHttpClient TokenHttpClient
-        {
-            get
-            {
-                return _tokenHttpClient;
-            }
-            set
-            {
-                _tokenHttpClient = value;
-            }
-        }
-
-        public AppConfig(string userName, string password, string url, int port)
+        public AppConfig(string userName, string password, string url, int port, string protocol, string path)
         {
             this.userName = userName;
             this.password = password;
             this.url = url;
             this.port = port;
-
-            ExtendedHttpClient = new ExtendedHttpClient(this);
-            TokenHttpClient = new TokenHttpClient(this);
+            this.protocol = protocol;
+            this.path = path;
         }
 
         public Uri GetUri()
         {
             //TODO implement better logic for this ugly hack while under construction
-            return new UriBuilder("http://", url.Replace("http://", ""), port).Uri;
+            if(protocol == "Http")
+            {
+                return new UriBuilder("http://", url, port, path).Uri;
+            }
+            else
+            {
+                return new UriBuilder("https://", url, port, path).Uri;
+            }
         }
 
         public string GetBase64Auth()
