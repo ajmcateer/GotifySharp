@@ -23,34 +23,26 @@ namespace gotifySharp.API
 
         public async Task<GetApplicationResponse> GetApplicationsAsync()
         {
-            try
+            //TODO Use Idispose
+            var request = new HttpRequestMessage(HttpMethod.Get, path);
+
+            var httpclient = services.GetService<IHttpClientFactory>();
+            var client = httpclient.CreateClient("AdminAuth");
+
+            HttpResponseMessage result = await client.SendAsync(request);
+
+            if (result.IsSuccessStatusCode)
             {
-                //TODO Use Idispose
-                var request = new HttpRequestMessage(HttpMethod.Get, path);
-
-                var httpclient = services.GetService<IHttpClientFactory>();
-                var client = httpclient.CreateClient("AdminAuth");
-
-                HttpResponseMessage result = await client.SendAsync(request);
-
-                if (result.IsSuccessStatusCode)
-                {
-                    var parsedJson = JsonConvert.DeserializeObject<List<Models.ApplicationModel>>(await result.Content.ReadAsStringAsync());
-                    GetApplicationResponse applicationModel = new GetApplicationResponse(true, parsedJson);
-                    return applicationModel;
-                }
-                else
-                {
-                    var parsedJson = JsonConvert.DeserializeObject<ErrorResponse>(await result.Content.ReadAsStringAsync());
-                    GetApplicationResponse applicationModel = new GetApplicationResponse(false, parsedJson);
-                    return applicationModel;
-                }
+                var parsedJson = JsonConvert.DeserializeObject<List<Models.ApplicationModel>>(await result.Content.ReadAsStringAsync());
+                GetApplicationResponse applicationModel = new GetApplicationResponse(true, parsedJson);
+                return applicationModel;
             }
-            catch (Exception ex)
+            else
             {
-
+                var parsedJson = JsonConvert.DeserializeObject<ErrorResponse>(await result.Content.ReadAsStringAsync());
+                GetApplicationResponse applicationModel = new GetApplicationResponse(false, parsedJson);
+                return applicationModel;
             }
-            return null;
         }
 
         public async Task<CreateApplicationResponse> CreateApplicationsAsync(string name, string description)

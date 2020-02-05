@@ -66,46 +66,64 @@ namespace gotifySharp
             stream.InitWebSocket();
         }
 
+        /// <exception cref="System.HttpRequestException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<ClientResponse> CreateClientAsync(string name)
         {
             return await clientApi.CreateClientAsync(name);
         }
 
+        /// <exception cref="System.HttpRequestException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<GetClientResponse> GetClientAsync()
         {
             return await clientApi.GetClientAsync();
         }
 
+        /// <exception cref="System.HttpRequestException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<ClientResponse> UpdateClientAsync(string id, string newName)
         {
             return await clientApi.UpdateClientAsync(id, newName);
         }
 
+        /// <exception cref="System.HttpRequestException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<bool> DeleteClientAsync(string id)
         {
             return await clientApi.DeleteClientAsync(id);
         }
 
+        /// <exception cref="System.HttpRequestException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<GetMessageResponse> GetAllMessageAsync(int amount=200, int since=0)
         {
             return await messageApi.GetAllMessages(amount, since);
         }
 
+        /// <exception cref="System.HttpRequestException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<MessageCreateRequest> SendMessage(string message, string title, string AppKey, int priority)
         {
             return await messageApi.CreateMessage(message, title, AppKey, priority);
         }
 
+        /// <exception cref="System.HttpRequestException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<GetMessageResponse> GetMessageForApplicationAsync(int id, int amount = 200, int since = 0)
         {
             return await messageApi.GetMessageForApplication(id.ToString(), amount, since);
         }
 
+        /// <exception cref="System.HttpRequestException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<GetApplicationResponse> GetApplications()
         {
             return await application.GetApplicationsAsync();
         }
 
+        /// <exception cref="System.HttpRequestException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<CreateApplicationResponse> CreateApplicationAsync(string name, string description)
         {
             return await application.CreateApplicationsAsync(name, description);

@@ -17,7 +17,7 @@ namespace gotifySharpIntergrationTests
         public static string USERNAME = "admin";
         public static string PASSWORD = "admin";
         public static bool StartServer = true;
-        public static IConfig Config = new AppConfig(USERNAME, PASSWORD, URL, PORT);
+        public static IConfig Config = new AppConfig(USERNAME, PASSWORD, URL, PORT, "Http", "/");
 
     }
 }

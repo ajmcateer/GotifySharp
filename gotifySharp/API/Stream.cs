@@ -25,9 +25,20 @@ namespace gotifySharp.API
 
         public void InitWebSocket()
         {
-            var ws = new WebSocket($"ws://{appConfig.url}:{appConfig.port}/stream");
+            string protocol = "";
+
+            if(appConfig.protocol == "Http")
+            {
+                protocol = "ws";
+            }
+            else
+            {
+                protocol = "wss";
+            }
+
+            var ws = new WebSocket($"{protocol}://{appConfig.url}/stream");
+            ws.SetCredentials($"{appConfig.userName}", $"{appConfig.password}", true);
             ws.OnMessage += WsIncomingMessage;
-            ws.SetCredentials("admin", "admin", true);
             ws.Connect();
         }
 
