@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <SignAssembly>false</SignAssembly>
-    <Version>0.0.7</Version>
+    <Version>0.0.8</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/ajmcateer/GotifySharp</RepositoryUrl>
     <PackageProjectUrl>https://github.com/ajmcateer/GotifySharp</PackageProjectUrl>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>Enhanced Websocket Support</PackageReleaseNotes>
     <Authors>AJ McAteer</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageId>GotifySharp</PackageId>

@@ -23,6 +23,9 @@ namespace gotifySharp
         private Stream stream;
 
         public event EventHandler<Models.MessageModel> OnMessage;
+        public event EventHandler OnClose;
+        public event EventHandler OnOpen;
+        public event EventHandler OnError;
 
         public GotifySharp(IConfig config)
         {
@@ -54,6 +57,24 @@ namespace gotifySharp
             application = new Application(contianer);
             stream = new Stream(contianer);
             stream.OnMessage += Stream_OnMessage;
+            stream.OnClose += Stream_OnClose;
+            stream.OnError += Stream_OnError;
+            stream.OnOpen += Stream_OnOpen;
+        }
+
+        private void Stream_OnOpen(object sender, EventArgs e)
+        {
+            OnOpen?.Invoke(this, null);
+        }
+
+        private void Stream_OnError(object sender, EventArgs e)
+        {
+            OnError?.Invoke(this, null);
+        }
+
+        private void Stream_OnClose(object sender, EventArgs e)
+        {
+            OnClose?.Invoke(this, null);
         }
 
         private void Stream_OnMessage(object sender, Models.MessageModel e)
