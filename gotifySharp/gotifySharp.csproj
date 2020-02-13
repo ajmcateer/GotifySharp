@@ -3,7 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <SignAssembly>false</SignAssembly>
-    <Version>1.0.0</Version>
+    <Version>0.0.7</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/ajmcateer/GotifySharp</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/ajmcateer/GotifySharp</PackageProjectUrl>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <Authors>AJ McAteer</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageId>GotifySharp</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
