@@ -21,6 +21,7 @@ namespace gotifySharp
         private Message messageApi;
         private Application application;
         private Stream stream;
+        private API.Version version;
 
         public event EventHandler<Models.MessageModel> OnMessage;
         public event EventHandler OnClose;
@@ -56,6 +57,7 @@ namespace gotifySharp
             messageApi = new API.Message(contianer);
             application = new Application(contianer);
             stream = new Stream(contianer);
+            version = new API.Version(contianer);
             stream.OnMessage += Stream_OnMessage;
             stream.OnClose += Stream_OnClose;
             stream.OnError += Stream_OnError;
@@ -148,6 +150,13 @@ namespace gotifySharp
         public async Task<CreateApplicationResponse> CreateApplicationAsync(string name, string description)
         {
             return await application.CreateApplicationsAsync(name, description);
+        }
+
+        /// <exception cref="System.HttpRequestException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        public async Task<VersionResponse> GetVersionInfo()
+        {
+            return await version.GetVersionInfoAsync();
         }
     }
 }
