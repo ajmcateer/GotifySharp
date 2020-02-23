@@ -19,4 +19,4 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release
     - name: Test
-      run: dotnet test ./src/Solution.sln --configuration Release
+      run: dotnet test .\gotifySharp.sln --configuration Release
