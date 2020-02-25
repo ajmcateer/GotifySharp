@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Dynamic;
 using gotifySharp.Responses;
+using gotifySharp.Requests;
 
 namespace gotifySharp
 {
@@ -22,6 +23,7 @@ namespace gotifySharp
         private Application application;
         private Stream stream;
         private API.Version version;
+        private API.Health health;
 
         public event EventHandler<Models.MessageModel> OnMessage;
         public event EventHandler OnClose;
@@ -58,6 +60,8 @@ namespace gotifySharp
             application = new Application(contianer);
             stream = new Stream(contianer);
             version = new API.Version(contianer);
+            health = new API.Health(contianer);
+
             stream.OnMessage += Stream_OnMessage;
             stream.OnClose += Stream_OnClose;
             stream.OnError += Stream_OnError;
@@ -157,6 +161,13 @@ namespace gotifySharp
         public async Task<VersionResponse> GetVersionInfo()
         {
             return await version.GetVersionInfoAsync();
+        }
+
+        /// <exception cref="System.HttpRequestException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        public async Task<HealthResponse> GetHealthStatusAsync()
+        {
+            return await health.GetHealthResponseAsync();
         }
     }
 }

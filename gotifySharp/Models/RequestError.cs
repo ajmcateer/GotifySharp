@@ -7,9 +7,9 @@ using gotifySharp.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace gotifySharp.Responses
+namespace gotifySharp.Models
 {
-    public class ErrorResponse : Response
+    public class RequestError
     {
         [JsonProperty("error", Required = Required.Always)]
         public string Error { get; set; }

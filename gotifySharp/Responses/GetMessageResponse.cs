@@ -15,7 +15,7 @@ namespace gotifySharp.Responses
             this.Success = success;
         }
 
-        public GetMessageResponse(bool success, ErrorResponse errorResponse)
+        public GetMessageResponse(bool success, RequestError errorResponse)
         {
             this.ErrorResponse = errorResponse;
             this.Success = success;

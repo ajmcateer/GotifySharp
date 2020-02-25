@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace gotifySharp.API
 {
-    public class Version
+    public class Health
     {
-        private const string path = "version";
+        private const string path = "health";
         ServiceProvider services;
 
-        public Version(ServiceProvider services)
+        public Health(ServiceProvider services)
         {
             this.services = services;
         }
 
-        public async Task<VersionResponse> GetVersionInfoAsync()
+        public async Task<HealthResponse> GetHealthResponseAsync()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, path);
 
@@ -31,15 +31,15 @@ namespace gotifySharp.API
 
             if (result.IsSuccessStatusCode)
             {
-                var parsedJson = JsonConvert.DeserializeObject<Models.Version>(await result.Content.ReadAsStringAsync());
-                VersionResponse clientModel = new VersionResponse(true, parsedJson);
-                return clientModel;
+                var parsedJson = JsonConvert.DeserializeObject<Models.Health>(await result.Content.ReadAsStringAsync());
+                HealthResponse health = new HealthResponse(true, parsedJson);
+                return health;
             }
             else
             {
                 var parsedJson = JsonConvert.DeserializeObject<RequestError>(await result.Content.ReadAsStringAsync());
-                VersionResponse clientModel = new VersionResponse(false, parsedJson);
-                return clientModel;
+                HealthResponse health = new HealthResponse(false, parsedJson);
+                return health;
             }
         }
     }

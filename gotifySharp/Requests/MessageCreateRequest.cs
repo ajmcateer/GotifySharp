@@ -1,27 +1,28 @@
 ﻿using gotifySharp.Models;
+using gotifySharp.Responses;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace gotifySharp.Responses
+namespace gotifySharp.Requests
 {
-    public class GetApplicationResponse : Response
+    public class MessageCreateRequest : Response
     {
-        private List<ApplicationModel> applicationGetModel;
+        private SendMessage messageModel;
 
-        public GetApplicationResponse(bool success, List<ApplicationModel> applicationGetModel)
+        public MessageCreateRequest(bool success, SendMessage messageRequest)
         {
-            this.applicationGetModel = applicationGetModel;
+            this.messageModel = messageRequest;
             this.Success = success;
         }
 
-        public GetApplicationResponse(bool success, RequestError errorResponse)
+        public MessageCreateRequest(bool success, RequestError errorResponse)
         {
             this.ErrorResponse = errorResponse;
             this.Success = success;
         }
 
-        public List<ApplicationModel> ApplicationResponse
+        public SendMessage MessageModel
         {
             get
             {
@@ -31,12 +32,12 @@ namespace gotifySharp.Responses
                 }
                 else
                 {
-                    return applicationGetModel;
+                    return messageModel;
                 }
             }
             set
             {
-                applicationGetModel = value;
+                messageModel = value;
             }
         }
     }

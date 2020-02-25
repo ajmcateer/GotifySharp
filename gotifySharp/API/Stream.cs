@@ -16,7 +16,7 @@ namespace gotifySharp.API
         public event EventHandler OnOpen;
         public event EventHandler OnError;
 
-        const string path = "/stream";
+        const string path = "stream";
         ServiceProvider services;
         IConfig appConfig;
 
@@ -39,13 +39,15 @@ namespace gotifySharp.API
                 protocol = "wss";
             }
 
-            var ws = new WebSocket($"{protocol}://{appConfig.url}:{appConfig.port}/stream");
-            ws.SetCredentials($"{appConfig.userName}", $"{appConfig.password}", true);
-            ws.OnMessage += WsIncomingMessage;
-            ws.OnClose += Ws_OnClose;
-            ws.OnError += Ws_OnError;
-            ws.OnOpen += Ws_OnOpen;
-            ws.Connect();
+            using (var ws = new WebSocket($"{protocol}://{appConfig.url}:{appConfig.port}/{path}"))
+            {
+                ws.SetCredentials($"{appConfig.userName}", $"{appConfig.password}", true);
+                ws.OnMessage += WsIncomingMessage;
+                ws.OnClose += Ws_OnClose;
+                ws.OnError += Ws_OnError;
+                ws.OnOpen += Ws_OnOpen;
+                ws.Connect();
+            }
         }
 
         private void Ws_OnOpen(object sender, EventArgs e)

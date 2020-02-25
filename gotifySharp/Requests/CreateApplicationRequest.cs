@@ -3,25 +3,25 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace gotifySharp.Responses
+namespace gotifySharp.Requests
 {
-    public class MessageCreateRequest : Response
+    public class CreateApplicationRequest : Response
     {
-        private SendMessage messageModel;
+        private CreateApplication applicationCreateModel;
 
-        public MessageCreateRequest(bool success, SendMessage messageRequest)
+        public CreateApplicationRequest(bool success, CreateApplication applicationCreateModel)
         {
-            this.messageModel = messageRequest;
+            this.applicationCreateModel = applicationCreateModel;
             this.Success = success;
         }
 
-        public MessageCreateRequest(bool success, ErrorResponse errorResponse)
+        public CreateApplicationRequest(bool success, RequestError errorResponse)
         {
             this.ErrorResponse = errorResponse;
             this.Success = success;
         }
 
-        public SendMessage MessageModel
+        public CreateApplication ApplicationCreateModel
         {
             get
             {
@@ -31,12 +31,12 @@ namespace gotifySharp.Responses
                 }
                 else
                 {
-                    return messageModel;
+                    return applicationCreateModel;
                 }
             }
             set
             {
-                messageModel = value;
+                applicationCreateModel = value;
             }
         }
     }

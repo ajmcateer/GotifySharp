@@ -41,7 +41,7 @@ namespace gotifySharp.API
             }
             else
             {
-                var parsedJson = JsonConvert.DeserializeObject<ErrorResponse>(await result.Content.ReadAsStringAsync());
+                var parsedJson = JsonConvert.DeserializeObject<RequestError>(await result.Content.ReadAsStringAsync());
                 ClientResponse clientModel = new ClientResponse(false, parsedJson);
                 return clientModel;
             }
@@ -65,7 +65,7 @@ namespace gotifySharp.API
             }
             else
             {
-                var parsedJson = JsonConvert.DeserializeObject<ErrorResponse>(await result.Content.ReadAsStringAsync());
+                var parsedJson = JsonConvert.DeserializeObject<RequestError>(await result.Content.ReadAsStringAsync());
                 GetClientResponse clientModel = new GetClientResponse(false, parsedJson);
                 return clientModel;
             }
@@ -73,27 +73,30 @@ namespace gotifySharp.API
 
         public async Task<ClientResponse> UpdateClientAsync(string id, string name)
         {
-            var request = new HttpRequestMessage(HttpMethod.Put, path + "/" + id);
-            request.Content = new StringContent("{\"name\": \"" + name + "\"}",
-                Encoding.UTF8,
-                "application/json");
-
-            var httpclient = services.GetService<IHttpClientFactory>();
-            var client = httpclient.CreateClient("AdminAuth");
-
-            HttpResponseMessage result = await client.SendAsync(request);
-
-            if (result.IsSuccessStatusCode)
+            using (var request = new HttpRequestMessage(HttpMethod.Put, path + "/" + id))
             {
-                var parsedJson = JsonConvert.DeserializeObject<Responses.ClientModel>(await result.Content.ReadAsStringAsync());
-                ClientResponse clientModel = new ClientResponse(true, parsedJson);
-                return clientModel;
-            }
-            else
-            {
-                var parsedJson = JsonConvert.DeserializeObject<ErrorResponse>(await result.Content.ReadAsStringAsync());
-                ClientResponse clientModel = new ClientResponse(false, parsedJson);
-                return clientModel;
+                request.Content = new StringContent("{\"name\": \"" + name + "\"}",
+                    Encoding.UTF8,
+                    "application/json");
+
+                var httpclient = services.GetService<IHttpClientFactory>();
+                var client = httpclient.CreateClient("AdminAuth");
+
+                using (HttpResponseMessage result = await client.SendAsync(request))
+                {
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var parsedJson = JsonConvert.DeserializeObject<Responses.ClientModel>(await result.Content.ReadAsStringAsync());
+                        ClientResponse clientModel = new ClientResponse(true, parsedJson);
+                        return clientModel;
+                    }
+                    else
+                    {
+                        var parsedJson = JsonConvert.DeserializeObject<RequestError>(await result.Content.ReadAsStringAsync());
+                        ClientResponse clientModel = new ClientResponse(false, parsedJson);
+                        return clientModel;
+                    }
+                }
             }
         }
 

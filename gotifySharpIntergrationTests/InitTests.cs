@@ -36,7 +36,7 @@ namespace gotifySharpIntergrationTests
             catch (SocketException socExp)
             {
                 Settings.StartServer = false;
-                Console.WriteLine("Port not open not starting server assuming its already running");
+                Console.WriteLine("Port not open not starting server assuming its already running", socExp.Message);
             }
         }
 

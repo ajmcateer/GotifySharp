@@ -15,7 +15,7 @@ namespace gotifySharp.Models
             this.Success = success;
         }
 
-        public ClientResponse(bool success, ErrorResponse errorResponse)
+        public ClientResponse(bool success, RequestError errorResponse)
         {
             this.ErrorResponse = errorResponse;
             this.Success = success;
@@ -27,7 +27,7 @@ namespace gotifySharp.Models
             {
                 if (!Success)
                 {
-                    throw new NullReferenceException();
+                    return null;
                 }
                 else
                 {

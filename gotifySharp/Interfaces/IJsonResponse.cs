@@ -10,6 +10,6 @@ namespace gotifySharp.Interfaces
     {
         public bool Success { get; set; }
 
-        public ErrorResponse ErrorResponse { get; set; }
+        public RequestError ErrorResponse { get; set; }
     }
 }
