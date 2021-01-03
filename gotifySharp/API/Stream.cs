@@ -1,20 +1,27 @@
 ﻿using gotifySharp.Interfaces;
 using gotifySharp.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.WebSockets;
 using System.Text;
-using WebSocketSharp;
+using System.Threading.Tasks;
+using Websocket.Client;
+using Websocket.Client.Models;
+using static gotifySharp.Enums.ConnectionInfo;
 
 namespace gotifySharp.API
 {
-    public class Stream
+    public class Stream : IDisposable
     {
-        public event EventHandler<Models.MessageModel> OnMessage;
-        public event EventHandler OnClose;
-        public event EventHandler OnOpen;
-        public event EventHandler OnError;
+        private WebsocketClient ws_client;
+        public event EventHandler<MessageModel> OnMessage;
+        public event EventHandler<WebsocketDisconnectStatus> OnDisconnect;
+        public event EventHandler<WebsocketReconnectStatus> OnReconnect;
 
         const string path = "stream";
         ServiceProvider services;
@@ -26,7 +33,7 @@ namespace gotifySharp.API
             appConfig = services.GetService<IConfig>();
         }
 
-        public void InitWebSocket()
+        public async Task InitWebSocketAsync()
         {
             string protocol = "";
 
@@ -39,36 +46,54 @@ namespace gotifySharp.API
                 protocol = "wss";
             }
 
-            using (var ws = new WebSocket($"{protocol}://{appConfig.url}:{appConfig.port}/{path}"))
+            Uri uri = new Uri($"{protocol}://{appConfig.url}:{appConfig.port}/{path}");
+
+            var factory = new Func<ClientWebSocket>(() =>
             {
-                ws.SetCredentials($"{appConfig.userName}", $"{appConfig.password}", true);
-                ws.OnMessage += WsIncomingMessage;
-                ws.OnClose += Ws_OnClose;
-                ws.OnError += Ws_OnError;
-                ws.OnOpen += Ws_OnOpen;
-                ws.Connect();
-            }
+                var client = new ClientWebSocket
+                {
+                    Options =
+                    {
+                        KeepAliveInterval = TimeSpan.FromSeconds(5),
+                    }
+                };
+                client.Options.SetRequestHeader("Authorization", $"Basic {Base64Encode($"{appConfig.userName}:{appConfig.password}")}");
+                return client;
+            });
+
+            ws_client = new WebsocketClient(uri, factory);
+            ws_client.MessageReceived.Subscribe(msg => WsIncomingMessage(msg));
+            ws_client.DisconnectionHappened.Subscribe(msg => Ws_OnClose(msg));
+            ws_client.ReconnectionHappened.Subscribe(msg => Ws_OnOpen(msg));
+            await ws_client.Start();
         }
 
-        private void Ws_OnOpen(object sender, EventArgs e)
+        private string Base64Encode(string plainText)
         {
-            OnOpen?.Invoke(this, null);
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
         }
 
-        private void Ws_OnError(object sender, ErrorEventArgs e)
+        private void Ws_OnOpen(ReconnectionInfo reconnectionInfo)
         {
-            OnError?.Invoke(this, null);
+            var test = reconnectionInfo.Type;
+            OnReconnect?.Invoke(this, (WebsocketReconnectStatus)reconnectionInfo.Type);
         }
 
-        private void Ws_OnClose(object sender, CloseEventArgs e)
+        private void Ws_OnClose(DisconnectionInfo disconnectionInfo)
         {
-            OnClose?.Invoke(this, null);
+            OnDisconnect?.Invoke(this, (WebsocketDisconnectStatus)disconnectionInfo.Type);
         }
 
-        private void WsIncomingMessage(object sender, MessageEventArgs e)
+        private void WsIncomingMessage(ResponseMessage msg)
         {
-            var parsedJson = JsonConvert.DeserializeObject<Models.MessageModel>(e.Data);
+            var parsedJson = JsonConvert.DeserializeObject<Models.MessageModel>(msg.Text);
             OnMessage?.Invoke(this, parsedJson);
+        }
+
+        public void Dispose()
+        {
+            ws_client.Dispose();
         }
     }
 }

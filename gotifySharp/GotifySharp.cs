@@ -13,6 +13,7 @@ using Newtonsoft.Json.Converters;
 using System.Dynamic;
 using gotifySharp.Responses;
 using gotifySharp.Requests;
+using static gotifySharp.Enums.ConnectionInfo;
 
 namespace gotifySharp
 {
@@ -26,9 +27,8 @@ namespace gotifySharp
         private API.Health health;
 
         public event EventHandler<Models.MessageModel> OnMessage;
-        public event EventHandler OnClose;
-        public event EventHandler OnOpen;
-        public event EventHandler OnError;
+        public event EventHandler<WebsocketDisconnectStatus> OnDisconnect;
+        public event EventHandler<WebsocketReconnectStatus> OnReconnect;
 
         public GotifySharp(IConfig config)
         {
@@ -63,24 +63,18 @@ namespace gotifySharp
             health = new API.Health(contianer);
 
             stream.OnMessage += Stream_OnMessage;
-            stream.OnClose += Stream_OnClose;
-            stream.OnError += Stream_OnError;
-            stream.OnOpen += Stream_OnOpen;
+            stream.OnDisconnect += Stream_OnDisconnect;
+            stream.OnReconnect += Stream_OnReconnect;
         }
 
-        private void Stream_OnOpen(object sender, EventArgs e)
+        private void Stream_OnReconnect(object sender, WebsocketReconnectStatus e)
         {
-            OnOpen?.Invoke(this, null);
+            OnReconnect?.Invoke(this, e);
         }
 
-        private void Stream_OnError(object sender, EventArgs e)
+        private void Stream_OnDisconnect(object sender, WebsocketDisconnectStatus e)
         {
-            OnError?.Invoke(this, null);
-        }
-
-        private void Stream_OnClose(object sender, EventArgs e)
-        {
-            OnClose?.Invoke(this, null);
+            OnDisconnect?.Invoke(this, e);
         }
 
         private void Stream_OnMessage(object sender, Models.MessageModel e)
@@ -90,7 +84,7 @@ namespace gotifySharp
 
         public void InitWebsocket()
         {
-            stream.InitWebSocket();
+            stream.InitWebSocketAsync();
         }
 
         /// <exception cref="System.HttpRequestException"></exception>
@@ -137,7 +131,7 @@ namespace gotifySharp
 
         /// <exception cref="System.HttpRequestException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
-        public async Task<GetMessageResponse> GetMessageForApplicationAsync(int id, int amount = 200, int since = 0)
+        public async Task<GetMessageResponse> GetMessageForApplicationAsync(int id, int amount = 1, int since = 0)
         {
             return await messageApi.GetMessageForApplication(id.ToString(), amount, since);
         }
