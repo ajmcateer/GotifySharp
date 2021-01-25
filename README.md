@@ -1,3 +1,9 @@
+# WARNING API IS GOING THROUGH HEAVY CHANGES AND WILL MOST LIKELY BREAK
+
+Next version already breaks anything releated to the websocket as I switched the underlying library to Websocket.Client
+
+more breaking changes are coming soon
+
 # GotifySharp
 
 Library used to interact with Gotify Server built in .Net Core 3.0
