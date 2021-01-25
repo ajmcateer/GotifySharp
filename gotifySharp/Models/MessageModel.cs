@@ -6,12 +6,12 @@ namespace gotifySharp.Models
 {
     public class MessageModel
     {
-        public int id { get; set; }
-        public int appid { get; set; }
-        public string message { get; set; }
-        public string title { get; set; }
-        public int priority { get; set; }
+        public int Id { get; set; }
+        public int Appid { get; set; }
+        public string Message { get; set; }
+        public string Title { get; set; }
+        public int Priority { get; set; }
         //public string[] extras { get; set; }
-        public DateTime date { get; set; }
+        public DateTime Date { get; set; }
     }
 }
